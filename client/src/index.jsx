@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       repos: []
     }
 
@@ -16,6 +17,11 @@ class App extends React.Component {
   search (term) {
     console.log(`${term} was searched`);
     // TODO
+    axios.post('/repos', `{term: ${term} }`)
+      .then(axios.get('/repos'))
+      .then(result => this.setState({repos: result.data}))
+      .then(()=> console.log('Finished search and updated the states!'))
+      .catch(err => console.log('Err searching the term!!!'));
   }
 
   render () {

@@ -14,9 +14,9 @@ let getReposByUsername = (username) => {
       'Authorization': `token ${config.TOKEN}`
     }
   };
-  return axios.get(options.url, options.headers)
-    .then(result => result.sort((a, b) => b.stargazers_count - a.stargazers_count))
-    .catch(err => console.log('Err getting Repos by username!'))
+  return axios.get(options.url, options.headers);
+    // .then(result => console.log('Success getting repos by username!', result))
+    // .catch(err => console.log('Err getting Repos by username!'))
 
 }
 
