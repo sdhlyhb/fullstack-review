@@ -24,8 +24,6 @@ class App extends React.Component {
         axios.get('/repos').then(repos => {
           this.setState({repos: repos.data});
           console.log('Finished search and updated the states!', repos) //25 repos sorted by stargazers_count
-
-
         })
 
       })

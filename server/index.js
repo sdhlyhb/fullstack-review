@@ -47,9 +47,9 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  db.showTop25Data()
+  return db.showTop25Data()
     .then(data => {
-      console.log('top25data:', data);
+      console.log('top25dataRepo_name', data.map(ele=> ele.repo_name));
 
       res.send(data)})
 
