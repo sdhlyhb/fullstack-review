@@ -34,9 +34,9 @@ app.post('/repos', function (req, res) {
       })
     ))
     .then(repos => {
-      var sorted = repos.sort((a,b) => b.stargazers_count - a.stargazers_count);
-      db.save(sorted);
-      res.send(sorted);
+
+      db.save(repos);
+      res.send(repos);
 
     })
     // .then (()=> res.send('Sucess Posting the repos!'))

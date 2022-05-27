@@ -21,7 +21,7 @@ let save = (dataArr) => {
   // return Repo.insertMany(dataArr)
   //   .then(() => console.log('Sucess save the data to database!'))
   //   .catch(err => console.log('Err! Failed to save the data to the database!'))
-  Repo.insertMany(dataArr, (err, result) => {
+  Repo.insertMany(dataArr, {ordered: false}, (err, result) => {
     if(err) {
       console.log('Err! Failed to save the data to the database!');
     } else {
@@ -33,7 +33,7 @@ let save = (dataArr) => {
 
 
  let showTop25Data = () => {
-   return Repo.find({}).limit(25);
+   return Repo.find({}).sort({'stargazers_count': -1}).limit(25);
  }
 
 module.exports.save = save;

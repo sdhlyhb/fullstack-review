@@ -14,6 +14,24 @@ class App extends React.Component {
 
   }
 
+
+  componentDidMount() {
+    this.displayRepos();
+  }
+
+
+  displayRepos() {
+     axios.get('/repos')
+      .then(repos => {
+        this.setState({ repos: repos.data });
+
+      })
+      .then (console.log('Repos displayed!'))
+      .catch(err => console.log('Err updating the states!!'));
+
+
+  };
+
   search (term) {
     console.log(`${term} was searched`);
     // TODO
@@ -21,10 +39,8 @@ class App extends React.Component {
 
       .then(result => {
         console.log('Finished search!', result); //30 repos
-        axios.get('/repos').then(repos => {
-          this.setState({repos: repos.data});
-          console.log('Finished search and updated the states!', repos) //25 repos sorted by stargazers_count
-        })
+        this.displayRepos();
+
 
       })
       .catch(err => console.log('Err searching the term!!!'));
