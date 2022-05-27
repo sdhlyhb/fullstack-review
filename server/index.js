@@ -36,9 +36,10 @@ app.post('/repos', function (req, res) {
     .then(repos => {
       var sorted = repos.sort((a,b) => b.stargazers_count - a.stargazers_count);
       db.save(sorted);
+      res.send(sorted);
 
     })
-    .then (()=> res.send('Sucess Posting the repos!'))
+    // .then (()=> res.send('Sucess Posting the repos!'))
     .catch(err => console.log('Err posting the repos!!'))
 
 });
@@ -47,7 +48,10 @@ app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
   db.showTop25Data()
-    .then(data => res.send(data))
+    .then(data => {
+      console.log('top25data:', data);
+
+      res.send(data)})
 
     .catch(err => console.log('Err getting top 25 repos!'));
 });

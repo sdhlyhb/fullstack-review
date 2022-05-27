@@ -17,10 +17,18 @@ class App extends React.Component {
   search (term) {
     console.log(`${term} was searched`);
     // TODO
-    axios.post('/repos', `{term: ${term} }`)
-      .then(axios.get('/repos'))
-      .then(result => this.setState({repos: result.data}))
-      .then(()=> console.log('Finished search and updated the states!'))
+    axios.post('/repos', {term: `${term}` })
+
+      .then(result => {
+        console.log('Finished search!', result); //30 repos
+        axios.get('/repos').then(repos => {
+          this.setState({repos: repos.data});
+          console.log('Finished search and updated the states!', repos) //25 repos sorted by stargazers_count
+
+
+        })
+
+      })
       .catch(err => console.log('Err searching the term!!!'));
   }
 
