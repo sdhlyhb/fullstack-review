@@ -33,7 +33,11 @@ app.post('/repos', function (req, res) {
 
       })
     ))
-    .then(repos => db.save(repos) )
+    .then(repos => {
+      var sorted = repos.sort((a,b) => b.stargazers_count - a.stargazers_count);
+      db.save(sorted);
+
+    })
     .then (()=> res.send('Sucess Posting the repos!'))
     .catch(err => console.log('Err posting the repos!!'))
 
@@ -42,12 +46,9 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  axios.get('/repos')
-    .then(data => {
-      data.sort((a,b) => b.stargazers_count - a.stargazers_count);
-    })
-    .then(sorted => (sorted.slice(0, 25)))
-    .then((top25Data) => res.send(top25Data))
+  db.showTop25Data()
+    .then(data => res.send(data))
+
     .catch(err => console.log('Err getting top 25 repos!'));
 });
 

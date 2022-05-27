@@ -18,9 +18,23 @@ let save = (dataArr) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
-  return Repo.insertMany(dataArr)
-    .then(() => console.log('Sucess save the data to database!'))
-    .catch(err => console.log('Err! Failed to save the data to the database!'))
+  // return Repo.insertMany(dataArr)
+  //   .then(() => console.log('Sucess save the data to database!'))
+  //   .catch(err => console.log('Err! Failed to save the data to the database!'))
+  Repo.insertMany(dataArr, (err, result) => {
+    if(err) {
+      console.log('Err! Failed to save the data to the database!');
+    } else {
+      console.log('Sucess save the data to database!');
+    }
+
+  });
 }
 
+
+ let showTop25Data = () => {
+   return Repo.find({}).limit(25);
+ }
+
 module.exports.save = save;
+module.exports.showTop25Data = showTop25Data;
