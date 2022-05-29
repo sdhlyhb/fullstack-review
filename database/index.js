@@ -3,14 +3,17 @@ mongoose.connect('mongodb://localhost/fetcher', { 'useNewUrlParser': true, 'useU
 
 let repoSchema = new mongoose.Schema({
   // TODO: your schema here!
-  repo_id: {type: Number, unique: true, required: true},
+  repo_id: {type: Number, unique: true, required: true, index: true},
   user_id: Number,
   repo_url: String,
   repo_name: String,
   username: String,
   size: Number,
+  updated_at: String,
   stargazers_count: Number
 });
+
+repoSchema.index({repo_id: 1}, {unique: true});
 
 let Repo = mongoose.model('Repo', repoSchema);
 
@@ -18,17 +21,25 @@ let save = (dataArr) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
-  // return Repo.insertMany(dataArr)
-  //   .then(() => console.log('Sucess save the data to database!'))
+  //  Repo.insertMany(dataArr, {ordered: false})
+  //   .then((res) => console.log('Sucess save the data to database!'))
   //   .catch(err => console.log('Err! Failed to save the data to the database!'))
-  Repo.insertMany(dataArr, {ordered: false}, (err, result) => {
+
+
+  Repo.insertMany(dataArr, {'ordered': false}, (err, result) => {
     if(err) {
       console.log('Err! Failed to save the data to the database!');
+
     } else {
       console.log('Sucess save the data to database!');
+
     }
 
   });
+
+
+
+
 }
 
 

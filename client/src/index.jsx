@@ -26,7 +26,7 @@ class App extends React.Component {
         this.setState({ repos: repos.data });
 
       })
-      .then (console.log('Repos displayed!'))
+      .then (() => console.log('Repos displayed! Current state repos:', this.state.repos))
       .catch(err => console.log('Err updating the states!!'));
 
 
@@ -38,11 +38,13 @@ class App extends React.Component {
     axios.post('/repos', {term: `${term}` })
 
       .then(result => {
-        console.log('Finished search!', result); //30 repos
-        this.displayRepos();
+        console.log('Finished search! This is all the repos', result); //30 repos
+        // setTimeout(() => {this.displayRepos()}, 10);
+        this.displayRepos(); // top 25 repos
 
 
       })
+      .then ((res) => this.displayRepos())
       .catch(err => console.log('Err searching the term!!!'));
   }
 

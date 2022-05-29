@@ -38,9 +38,10 @@ app.post('/repos', function (req, res) {
       db.save(repos);
       res.send(repos);
 
+
+
     })
-    // .then (()=> res.send('Sucess Posting the repos!'))
-    .catch(err => console.log('Err posting the repos!!'))
+    .catch(err => console.log('Err posting the repos!!', err))
 
 });
 
@@ -50,10 +51,9 @@ app.get('/repos', function (req, res) {
   return db.showTop25Data()
     .then(data => {
       console.log('top25dataRepo_name', data.map(ele=> ele.repo_name));
-
       res.send(data)})
 
-    .catch(err => console.log('Err getting top 25 repos!'));
+    .catch(err => console.log('Err getting top 25 repos!', err));
 });
 
 let port = 1128;
