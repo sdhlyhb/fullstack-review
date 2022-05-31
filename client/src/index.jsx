@@ -9,7 +9,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      repos: []
+      repos: [],
+      importedRepos: [],
+      reposBeforeNewSearch: [],
+      updatedRepos:[]
     }
 
   }
@@ -22,11 +25,17 @@ class App extends React.Component {
 
   displayRepos() {
      axios.get('/repos')
-      .then(repos => {
-        this.setState({ repos: repos.data });
-
+      .then(reposData => {
+        let reposBeforeNewSearch = this.state.reposBeforeNewSearch;
+        let reposAfterNewSearch = reposData.data;
+        let updated = this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch);
+        console.log('before:',reposBeforeNewSearch, 'after:',reposAfterNewSearch)
+        this.setState({ repos: reposAfterNewSearch, updatedRepos: updated, reposBeforeNewSearch: reposAfterNewSearch});
       })
-      .then (() => console.log('Repos displayed! Current state repos:', this.state.repos))
+      .then (() => {
+        console.log('Repos displayed! Current state repos:', this.state.repos);
+
+        })
       .catch(err => console.log('Err updating the states!!'));
 
 
@@ -38,9 +47,10 @@ class App extends React.Component {
     axios.post('/repos', {term: `${term}` })
 
       .then(result => {
-        console.log('Finished search! This is all the repos', result); //30 repos
-        // setTimeout(() => {this.displayRepos()}, 10);
-        this.displayRepos(); // top 25 repos
+        console.log('Finished search! This is all the repos', result); //30 repos at most
+        this.setState({importedRepos: result.data});
+
+        // this.displayRepos(); // top 25 repos
 
 
       })
@@ -48,9 +58,25 @@ class App extends React.Component {
       .catch(err => console.log('Err searching the term!!!'));
   }
 
+
+    checkUpdates(oldArr, newArr) {
+      let stringifyOld = oldArr.map(ele => JSON.stringify(ele));
+      let diffArr = newArr.filter(ele => stringifyOld.includes(JSON.stringify(ele))=== false);
+      return diffArr;
+
+    }
+
+
+
+
+
+
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
+      <span id="update-msg">
+        {this.state.importedRepos.length} new repos imported to database, {this.state.updatedRepos.length} repos updated on this page!
+      </span>
       <RepoList repos={this.state.repos}/>
       <Search onSearch={this.search.bind(this)}/>
     </div>)
