@@ -19,7 +19,7 @@ app.post('/repos', function (req, res) {
   var username = req.body.term;
   console.log('this is username:', username);
   helper.getReposByUsername(username)
-    .then(result => result.data.map(ele => (
+    .then(result => result.map(ele => (
       {
         repo_id: ele.id,
         user_id: ele.owner.id,
@@ -55,6 +55,19 @@ app.get('/repos', function (req, res) {
 
     .catch(err => console.log('Err getting top 25 repos!', err));
 });
+
+app.get('/repos/users', function(req, res) {
+  return db.showAllUsers()
+    .then(data => {
+      console.log('this is all the users:', typeof(data[0]), data[0]);
+      res.send(data);
+  })
+    .catch(err => console.log('err getting all usernames:', err));
+})
+
+
+
+
 
 let port = 1128;
 

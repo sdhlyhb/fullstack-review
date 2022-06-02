@@ -13,7 +13,8 @@ class App extends React.Component {
       repos: [],
       importedRepos: [],
       reposBeforeNewSearch: [],
-      updatedRepos:[]
+      updatedRepos:[],
+      AllAddedUsers:[]
     }
 
   }
@@ -21,6 +22,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.displayRepos();
+    this.displayUsers();
   }
 
 
@@ -44,25 +46,41 @@ class App extends React.Component {
 
   }
 
+  displayUsers() {
+    axios.get('/repos/users')
+      .then(responses => {
+        console.log('this is the display user response:', responses);
+        this.setState({AllAddedUsers: responses.data});
+      })
+      .catch(err => console.log('err showing all the users!', err));
+  }
+
+
+
+
+
   search (term) {
     console.log(`${term} was searched`);
     // TODO
     axios.post('/repos', {term: `${term}` })
 
       .then(result => {
+
         console.log('Finished search! This is all the repos', result); //30 repos at most
         this.setState({importedRepos: result.data});
 
         this.displayRepos(); // top 25 repos
+        this.displayUsers();
 
 
       })
-      .then ((res) => this.displayRepos())
+      .then (() => this.displayRepos())
+      .then (()=> this.displayUsers())
       .catch(err => console.log('Err searching the term!!!'));
   }
 
 
-    checkUpdates(oldArr, newArr) {
+  checkUpdates(oldArr, newArr) {
       let stringifyOld = oldArr.map(ele => JSON.stringify(ele));
       let diffArr = newArr.filter(ele => stringifyOld.includes(JSON.stringify(ele))=== false);
       //this.setState({updatedRepos: diffArr});
@@ -83,7 +101,7 @@ class App extends React.Component {
       </span>
       <RepoList repos={this.state.repos}/>
       <Search onSearch={this.search.bind(this)}/>
-      <AllUsers />
+      <AllUsers users = {this.state.AllAddedUsers}/>
     </div>)
   }
 }
