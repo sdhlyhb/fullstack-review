@@ -21,7 +21,7 @@ async function getReposByUsername(username){
     repo = await axios.get(options.url, options.headers);
     totalData = totalData.concat(repo.data);
     page++;
-  }while(repo.data.length === 100 && page <= 4)
+  }while(repo.data.length === 100 && page <= 2) // fetch the data up to 300 records.
 
   console.log('this is total data:', totalData.length);
   return totalData;
@@ -29,16 +29,16 @@ async function getReposByUsername(username){
 
 }
 
-const getContributorsByUsernameAndReponame = (username, reponame) => {
-  let options = {
-    url: `https://api.github.com/users/${username}/${reposname}/contributors`,
-    headers: {
-      'User-Agent': 'request',
-      'Authorization': `token ${config.TOKEN}`
-    }
-  };
-  return axios.get(options.url, options.headers);
+// const getContributorsByUsernameAndReponame = (username, reponame) => {
+//   let options = {
+//     url: `https://api.github.com/users/${username}/${reposname}/contributors`,
+//     headers: {
+//       'User-Agent': 'request',
+//       'Authorization': `token ${config.TOKEN}`
+//     }
+//   };
+//   return axios.get(options.url, options.headers);
 
-}
+// }
 
 module.exports.getReposByUsername = getReposByUsername;

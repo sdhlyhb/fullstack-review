@@ -16,3 +16,12 @@ li {
   color: grey;
 }
 
+#box {
+  display: flex;
+  flex-direction: row;
+}
+
+#allUsers {
+
+  padding-left: 10%;
+}

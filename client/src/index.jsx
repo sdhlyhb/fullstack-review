@@ -32,9 +32,7 @@ class App extends React.Component {
         let reposBeforeNewSearch = this.state.repos;
         let reposAfterNewSearch = reposData.data;
         let updated = this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch);
-        // () =>{this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch), ()=> {this.setState(repos: reposData.data)}};
-
-        this.setState({repos: reposData.data, updatedRepos: updated}, () => this.setState({reposBeforeNewSearch: this.state.repos}))
+        this.setState({repos: reposData.data, updatedRepos: updated}, () => this.setState({reposBeforeNewSearch: reposAfterNewSearch}))
       })
 
       .then (() => {
@@ -74,8 +72,8 @@ class App extends React.Component {
 
 
       })
-      .then (() => this.displayRepos())
-      .then (()=> this.displayUsers())
+      .then (() => {this.displayRepos();  this.displayUsers();})
+
       .catch(err => console.log('Err searching the term!!!'));
   }
 
@@ -97,11 +95,17 @@ class App extends React.Component {
     return (<div>
       <h1>Github Fetcher</h1>
       <span id="update-msg">
-        {this.state.importedRepos.length} new repos imported to database, {this.state.updatedRepos.length} repos updated on this page!
+        {this.state.importedRepos.length} new repos fetched from API,  {this.state.updatedRepos.length} repos updated on this page!
       </span>
+      <div id="box">
       <RepoList repos={this.state.repos}/>
-      <Search onSearch={this.search.bind(this)}/>
       <AllUsers users = {this.state.AllAddedUsers}/>
+
+
+      </div>
+
+      <Search onSearch={this.search.bind(this)}/>
+
     </div>)
   }
 }

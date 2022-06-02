@@ -15,34 +15,29 @@ let repoSchema = new mongoose.Schema({
 
 repoSchema.index({repo_id: 1}, {unique: true});
 
-// let contributorSchema = new mongoose.Schema({
-//   repo_id: {type: Number, unique: true, required: true, index: true},
-//   username: String,
-//   contributors: [{name: String, contribution: Number}]
-// })
 
 let Repo = mongoose.model('Repo', repoSchema);
-// let Contributor = mongoose.model('Contributor', contributorSchema);
 
+//the function below will only save the first 100 objects of the 500 data fetched from API (need to fix later)
 let save = (dataArr) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
-  //  Repo.insertMany(dataArr, {ordered: false})
-  //   .then((res) => console.log('Sucess save the data to database!'))
-  //   .catch(err => console.log('Err! Failed to save the data to the database!'))
+   Repo.insertMany(dataArr, {ordered: false})
+    .then((res) => console.log('Sucess save the data to database!'))
+    .catch(err => console.log('Err! Failed to save the data to the database!', err))
 
 
-  Repo.insertMany(dataArr, {'ordered': false}, (err, result) => {
-    if(err) {
-      console.log('Err! Failed to save the data to the database!');
+  // Repo.insertMany(dataArr, {'ordered': false}, (err, result) => {
+  //   if(err) {
+  //     console.log('Err! Failed to save the data to the database!');
 
-    } else {
-      console.log('Sucess save the data to database!');
+  //   } else {
+  //     console.log('Sucess save the data to database!');
 
-    }
+  //   }
 
-  });
+  // });
 
 
 }

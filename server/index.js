@@ -35,6 +35,7 @@ app.post('/repos', function (req, res) {
     ))
     .then(repos => {
 
+      console.log('this the number of repos to save in db:', repos.length);
       db.save(repos);
       res.send(repos);
 
@@ -59,7 +60,7 @@ app.get('/repos', function (req, res) {
 app.get('/repos/users', function(req, res) {
   return db.showAllUsers()
     .then(data => {
-      console.log('this is all the users:', typeof(data[0]), data[0]);
+      console.log('this is all the users:', typeof(data[0]), data);
       res.send(data);
   })
     .catch(err => console.log('err getting all usernames:', err));
