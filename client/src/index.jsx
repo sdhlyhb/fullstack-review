@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import AllUsers from './components/AllUSers.jsx';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -26,12 +27,14 @@ class App extends React.Component {
   displayRepos() {
      axios.get('/repos')
       .then(reposData => {
-        let reposBeforeNewSearch = this.state.reposBeforeNewSearch;
+        let reposBeforeNewSearch = this.state.repos;
         let reposAfterNewSearch = reposData.data;
         let updated = this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch);
-        console.log('before:',reposBeforeNewSearch, 'after:',reposAfterNewSearch)
-        this.setState({ repos: reposAfterNewSearch, updatedRepos: updated, reposBeforeNewSearch: reposAfterNewSearch});
+        // () =>{this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch), ()=> {this.setState(repos: reposData.data)}};
+
+        this.setState({repos: reposData.data, updatedRepos: updated}, () => this.setState({reposBeforeNewSearch: this.state.repos}))
       })
+
       .then (() => {
         console.log('Repos displayed! Current state repos:', this.state.repos);
 
@@ -39,7 +42,7 @@ class App extends React.Component {
       .catch(err => console.log('Err updating the states!!'));
 
 
-  };
+  }
 
   search (term) {
     console.log(`${term} was searched`);
@@ -50,7 +53,7 @@ class App extends React.Component {
         console.log('Finished search! This is all the repos', result); //30 repos at most
         this.setState({importedRepos: result.data});
 
-        // this.displayRepos(); // top 25 repos
+        this.displayRepos(); // top 25 repos
 
 
       })
@@ -62,6 +65,7 @@ class App extends React.Component {
     checkUpdates(oldArr, newArr) {
       let stringifyOld = oldArr.map(ele => JSON.stringify(ele));
       let diffArr = newArr.filter(ele => stringifyOld.includes(JSON.stringify(ele))=== false);
+      //this.setState({updatedRepos: diffArr});
       return diffArr;
 
     }
@@ -79,6 +83,7 @@ class App extends React.Component {
       </span>
       <RepoList repos={this.state.repos}/>
       <Search onSearch={this.search.bind(this)}/>
+      <AllUsers />
     </div>)
   }
 }
