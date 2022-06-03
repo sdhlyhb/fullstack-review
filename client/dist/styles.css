@@ -23,5 +23,11 @@ li {
 
 #allUsers {
 
+  padding-top: 1%;
   padding-left: 10%;
+}
+
+.userEntry {
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
 }
