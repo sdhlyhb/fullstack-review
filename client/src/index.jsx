@@ -32,8 +32,13 @@ class App extends React.Component {
         let reposBeforeNewSearch = this.state.repos;
         let reposAfterNewSearch = reposData.data;
         let updated = this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch);
-        this.setState({repos: reposData.data, updatedRepos: updated}, () => this.setState({reposBeforeNewSearch: reposAfterNewSearch}))
-      })
+        this.setState(
+          {repos: reposData.data, updatedRepos: updated},
+          () => {setTimeout(() => {
+          this.setState({reposBeforeNewSearch: reposAfterNewSearch});
+        }, 1000 )
+      }
+      )})
 
       .then (() => {
         console.log('Repos displayed! Current state repos:', this.state.repos);
