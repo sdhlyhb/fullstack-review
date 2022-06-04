@@ -12,8 +12,8 @@ class App extends React.Component {
     this.state = {
       repos: [],
       importedRepos: [],
-      reposBeforeNewSearch: [],
-      updatedRepos:[],
+      // reposBeforeNewSearch: [],
+      // updatedRepos:[],
       AllAddedUsers:[]
     }
 
@@ -29,19 +29,24 @@ class App extends React.Component {
   displayRepos() {
      axios.get('/repos')
       .then(reposData => {
-        let reposBeforeNewSearch = this.state.repos;
-        let reposAfterNewSearch = reposData.data;
-        let updated = this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch);
-        this.setState(
-          {repos: reposData.data, updatedRepos: updated},
-          () => {setTimeout(() => {
-          this.setState({reposBeforeNewSearch: reposAfterNewSearch});
-        }, 1000 )
-      }
-      )})
+      //   let reposBeforeNewSearch = this.state.repos;
+      //   let reposAfterNewSearch = reposData.data;
+      //   let updated = this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch);
+      // //   this.setState(
+      //     {repos: reposAfterNewSearch},
+      //     () => {setTimeout(() => {
+      //     this.setState({reposBeforeNewSearch: reposAfterNewSearch, updatedRepos: updated});
+      //   }, 300 )
+      // }
+      // )
+
+      this.setState({repos: reposData.data});
+
+    })
 
       .then (() => {
         console.log('Repos displayed! Current state repos:', this.state.repos);
+        this.forceUpdate();
 
         })
       .catch(err => console.log('Err updating the states!!'));
@@ -53,7 +58,7 @@ class App extends React.Component {
     axios.get('/repos/users')
       .then(responses => {
         console.log('this is the display user response:', responses);
-        this.setState({AllAddedUsers: responses.data});
+        this.setState({AllAddedUsers: [...responses.data]});
       })
       .catch(err => console.log('err showing all the users!', err));
   }
@@ -70,26 +75,27 @@ class App extends React.Component {
       .then(result => {
 
         console.log('Finished search! This is all the repos', result); //30 repos at most
-        this.setState({importedRepos: result.data});
+        this.setState({importedRepos: [...result.data]});
 
-        this.displayRepos(); // top 25 repos
+       this.displayRepos();
         this.displayUsers();
+        this.forceUpdate();
 
 
       })
-      .then (() => {this.displayRepos();  this.displayUsers();})
+      .then ((response) => {this.displayRepos();  this.displayUsers(); this.forceUpdate();})
 
       .catch(err => console.log('Err searching the term!!!'));
   }
 
 
-  checkUpdates(oldArr, newArr) {
-      let stringifyOld = oldArr.map(ele => JSON.stringify(ele));
-      let diffArr = newArr.filter(ele => stringifyOld.includes(JSON.stringify(ele))=== false);
-      //this.setState({updatedRepos: diffArr});
-      return diffArr;
+  // checkUpdates(oldArr, newArr) {
+  //     let stringifyOld = oldArr.map(ele => JSON.stringify(ele));
+  //     let diffArr = newArr.filter(ele => stringifyOld.includes(JSON.stringify(ele))=== false);
+  //     // this.setState({updatedRepos: diffArr});
+  //     return diffArr;
 
-    }
+  //   }
 
 
 
@@ -100,7 +106,8 @@ class App extends React.Component {
     return (<div>
       <h1>Github Fetcher</h1>
       <span id="update-msg">
-        {this.state.importedRepos.length} new repos fetched from API,  {this.state.updatedRepos.length} repos updated on this page!
+        {this.state.importedRepos.length} new repos fetched from API
+        {/* ,  {this.state.updatedRepos.length} repos updated on this page! */}
       </span>
       <div id="box">
       <RepoList repos={this.state.repos}/>
