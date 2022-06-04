@@ -29,16 +29,6 @@ class App extends React.Component {
   displayRepos() {
      axios.get('/repos')
       .then(reposData => {
-      //   let reposBeforeNewSearch = this.state.repos;
-      //   let reposAfterNewSearch = reposData.data;
-      //   let updated = this.checkUpdates(reposBeforeNewSearch, reposAfterNewSearch);
-      // //   this.setState(
-      //     {repos: reposAfterNewSearch},
-      //     () => {setTimeout(() => {
-      //     this.setState({reposBeforeNewSearch: reposAfterNewSearch, updatedRepos: updated});
-      //   }, 300 )
-      // }
-      // )
 
       this.setState({repos: reposData.data});
 
@@ -83,7 +73,7 @@ class App extends React.Component {
 
 
       })
-      .then ((response) => {this.displayRepos();  this.displayUsers(); this.forceUpdate();})
+      .then ((response) => {this.displayRepos();  this.displayUsers(); this.forceUpdate();}) // don't know if this is kinda force another rendering.
 
       .catch(err => console.log('Err searching the term!!!'));
   }

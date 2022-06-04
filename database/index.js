@@ -27,19 +27,6 @@ let save = (dataArr) => {
     .then((res) => console.log('Sucess save the data to database!'))
     .catch(err => console.log('Err! Failed to save the data to the database!', err))
 
-
-  // Repo.insertMany(dataArr, {'ordered': false}, (err, result) => {
-  //   if(err) {
-  //     console.log('Err! Failed to save the data to the database!');
-
-  //   } else {
-  //     console.log('Sucess save the data to database!');
-
-  //   }
-
-  // });
-
-
 }
 
 
