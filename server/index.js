@@ -42,7 +42,7 @@ app.post('/repos', function (req, res) {
 
 
     })
-    .catch(err => console.log('Err posting the repos!!', err))
+    .catch(err => {console.log('Err posting the repos!!', err), res.status(404).send(err.data)})
 
 });
 
@@ -54,7 +54,7 @@ app.get('/repos', function (req, res) {
       console.log('top25dataRepo_name', data.map(ele=> ele.repo_name));
       res.send(data)})
 
-    .catch(err => console.log('Err getting top 25 repos!', err));
+    .catch(err => {console.log('Err getting top 25 repos!', err), res.status(404).send(err.data)});
 });
 
 app.get('/repos/users', function(req, res) {
@@ -63,7 +63,7 @@ app.get('/repos/users', function(req, res) {
       console.log('this is all the users:', typeof(data[0]), data);
       res.send(data);
   })
-    .catch(err => console.log('err getting all usernames:', err));
+    .catch(err => {console.log('err getting all usernames:', err), res.status(404).send(err.data)});
 })
 
 
